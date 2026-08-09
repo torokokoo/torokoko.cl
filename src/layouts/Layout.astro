@@ -1,25 +1,54 @@
 ---
 import "../styles/global.css";
+
+import type { Lang } from "../data/site";
+
+interface AlternateLink {
+	lang: Lang | "x-default";
+	href: string;
+}
+
+interface Props {
+	title: string;
+	description: string;
+	lang?: Lang;
+	canonicalPath?: string;
+	alternates?: AlternateLink[];
+}
+
+const {
+	title,
+	description,
+	lang = "en",
+	canonicalPath = Astro.url.pathname,
+	alternates = [],
+} = Astro.props;
+
+const pageTitle = title === "torokoko" ? title : `${title} | torokoko`;
+const canonical = new URL(canonicalPath, Astro.site).toString();
 ---
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="icon" type="image/x-icon" href="/favicon.ico?" />
 		<meta name="generator" content={Astro.generator} />
-		<title>torokoko</title>
+		<meta name="description" content={description} />
+		<link rel="canonical" href={canonical} />
+		{alternates.map((alternate) => (
+			<link rel="alternate" hreflang={alternate.lang} href={new URL(alternate.href, Astro.site)} />
+		))}
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="torokoko" />
+		<meta property="og:title" content={pageTitle} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonical} />
+		<meta name="twitter:card" content="summary" />
+		<title>{pageTitle}</title>
 	</head>
 	<body>
+		<a class="skip-link" href="#content">Skip to content</a>
 		<slot />
 	</body>
 </html>
-
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>

@@ -1,11 +1,38 @@
 ---
-import Hero from '../components/Hero.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Layout from "../layouts/Layout.astro";
 ---
 
-<Layout>
-	<Hero />
+<Layout
+	title="torokoko"
+	description="Choose a language to visit Diego Toro's personal website."
+	lang="en"
+	canonicalPath="/"
+	alternates={[
+		{ lang: "x-default", href: "/" },
+		{ lang: "es", href: "/es/" },
+		{ lang: "en", href: "/en/" },
+	]}
+>
+	<main id="content" class="portal-screen" aria-labelledby="portal-title">
+		<section class="retro-window portal-window">
+			<header class="window-titlebar">
+				<span>torokoko.exe</span>
+				<span aria-hidden="true" class="window-controls">
+					<i></i><i></i><i></i>
+				</span>
+			</header>
+			<div class="window-body portal-body">
+				<p class="small-label">personal website language selector</p>
+				<h1 id="portal-title" class="rainbow-text">Diego Toro</h1>
+				<p>
+					Backend software engineer and cybersecurity enthusiast based in Santiago, Chile.
+				</p>
+				<nav class="portal-actions" aria-label="Language selection">
+					<a class="button-95" href="/es/">Entrar en español</a>
+					<a class="button-95" href="/en/">Enter in English</a>
+				</nav>
+				<p class="status-line">Open to work. Blog online. Best viewed with curiosity.</p>
+			</div>
+		</section>
+	</main>
 </Layout>

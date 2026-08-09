@@ -1,0 +1,18 @@
+---
+import RetroWindow from "../components/RetroWindow.astro";
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="404" description="Page not found on torokoko." lang="en" canonicalPath="/404/">
+	<main id="content" class="portal-screen" aria-labelledby="not-found-title">
+		<RetroWindow title="not-found.sys" class="portal-window">
+			<p class="small-label">error 404</p>
+			<h1 id="not-found-title">This file is missing.</h1>
+			<p>Try the Spanish or English entrance instead.</p>
+			<nav class="portal-actions" aria-label="Return links">
+				<a class="button-95" href="/es/">Español</a>
+				<a class="button-95" href="/en/">English</a>
+			</nav>
+		</RetroWindow>
+	</main>
+</Layout>
