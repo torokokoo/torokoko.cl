@@ -8,9 +8,10 @@ import RetroWindow from "./RetroWindow.astro";
 interface Props {
 	lang: Lang;
 	posts: BlogPost[];
+	homePath?: string;
 }
 
-const { lang, posts } = Astro.props;
+const { lang, posts, homePath = languages[lang].homePath } = Astro.props;
 const copy = homeCopy[lang];
 ---
 
@@ -20,11 +21,11 @@ const copy = homeCopy[lang];
 	</div>
 
 	<header class="site-header">
-		<a class="brand" href={languages[lang].homePath}>
+		<a class="brand" href={homePath}>
 			<span aria-hidden="true" class="brand-square"></span>
 			{profile.handle}
 		</a>
-		<LanguageNav lang={lang} />
+		<LanguageNav lang={lang} currentPath={homePath} homePath={homePath} />
 	</header>
 
 	<main id="content" class="home-grid">

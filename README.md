@@ -7,7 +7,7 @@ npm run dev
 
 ## Content
 
-This is a bilingual Astro site for Diego Toro.
+This is a bilingual Astro site for Diego Toro. The English home is served at `/`; Spanish is available at `/es/`.
 
 - Pages live in `src/pages`.
 - Shared copy lives in `src/data/site.ts`.

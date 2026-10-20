@@ -1,38 +1,24 @@
 ---
+import HomeContent from "../components/HomeContent.astro";
+import { homeCopy } from "../data/site";
+import { getPosts } from "../lib/posts";
 import Layout from "../layouts/Layout.astro";
+
+const lang = "en" as const;
+const copy = homeCopy[lang];
+const posts = await getPosts(lang, 3);
 ---
 
 <Layout
-	title="torokoko"
-	description="Choose a language to visit Diego Toro's personal website."
-	lang="en"
+	title={copy.metaTitle}
+	description={copy.metaDescription}
+	lang={lang}
 	canonicalPath="/"
 	alternates={[
 		{ lang: "x-default", href: "/" },
 		{ lang: "es", href: "/es/" },
-		{ lang: "en", href: "/en/" },
+		{ lang: "en", href: "/" },
 	]}
 >
-	<main id="content" class="portal-screen" aria-labelledby="portal-title">
-		<section class="retro-window portal-window">
-			<header class="window-titlebar">
-				<span>torokoko.exe</span>
-				<span aria-hidden="true" class="window-controls">
-					<i></i><i></i><i></i>
-				</span>
-			</header>
-			<div class="window-body portal-body">
-				<p class="small-label">personal website language selector</p>
-				<h1 id="portal-title" class="rainbow-text">Diego Toro</h1>
-				<p>
-					Backend software engineer and cybersecurity enthusiast based in Santiago, Chile.
-				</p>
-				<nav class="portal-actions" aria-label="Language selection">
-					<a class="button-95" href="/es/">Entrar en español</a>
-					<a class="button-95" href="/en/">Enter in English</a>
-				</nav>
-				<p class="status-line">Open to work. Blog online. Best viewed with curiosity.</p>
-			</div>
-		</section>
-	</main>
+	<HomeContent lang={lang} posts={posts} homePath="/" />
 </Layout>

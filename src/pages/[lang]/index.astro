@@ -5,7 +5,7 @@ import { getPosts } from "../../lib/posts";
 import Layout from "../../layouts/Layout.astro";
 
 export function getStaticPaths() {
-	return Object.keys(languages).map((lang) => ({ params: { lang } }));
+	return [{ params: { lang: "es" } }];
 }
 
 const langParam = Astro.params.lang;

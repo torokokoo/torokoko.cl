@@ -8,7 +8,7 @@ export const languages = {
 	en: {
 		label: "English",
 		shortLabel: "EN",
-		homePath: "/en/",
+		homePath: "/",
 		blogPath: "/en/blog/",
 	},
 } as const;
