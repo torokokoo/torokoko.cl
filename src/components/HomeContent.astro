@@ -1,8 +1,10 @@
 ---
 import { homeCopy, languages, profile, type Lang } from "../data/site";
+import { projects } from "../data/projects";
 import type { BlogPost } from "../lib/posts";
 import LanguageNav from "./LanguageNav.astro";
 import PostList from "./PostList.astro";
+import ProjectList from "./ProjectList.astro";
 import RetroWindow from "./RetroWindow.astro";
 
 interface Props {
@@ -64,13 +66,8 @@ const copy = homeCopy[lang];
 			</dl>
 		</RetroWindow>
 
-		<RetroWindow title={copy.connectTitle} id="contact">
-			<ul class="link-stack">
-				<li><a href={profile.social.linkedin}>LinkedIn</a></li>
-				<li><a href={profile.social.github}>GitHub</a></li>
-				<li><a href={`mailto:${profile.email}`}>{profile.email}</a></li>
-				<li><a href={profile.resumeEs}>{copy.resumeLabel}</a></li>
-			</ul>
+		<RetroWindow title={copy.projectsTitle} id="projects" class="projects-preview">
+			<ProjectList projects={projects} lang={lang} />
 		</RetroWindow>
 
 		<RetroWindow title={copy.blogTitle} class="blog-preview">

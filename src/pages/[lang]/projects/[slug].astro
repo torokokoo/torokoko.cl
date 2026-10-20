@@ -1,0 +1,93 @@
+---
+import LanguageNav from "../../../components/LanguageNav.astro";
+import RetroWindow from "../../../components/RetroWindow.astro";
+import { projects } from "../../../data/projects";
+import { isLang, languages, type Lang } from "../../../data/site";
+import Layout from "../../../layouts/Layout.astro";
+
+export function getStaticPaths() {
+	return projects.flatMap((project) =>
+		Object.keys(languages).map((lang) => ({
+			params: { lang, slug: project.slug },
+			props: { project },
+		})),
+	);
+}
+
+interface Props {
+	project: (typeof projects)[number];
+}
+
+const { project } = Astro.props;
+const langParam = Astro.params.lang;
+if (!isLang(langParam)) {
+	return Astro.redirect("/");
+}
+
+const lang: Lang = langParam;
+const copy = project.copy[lang];
+const alternateLang = lang === "es" ? "en" : "es";
+const projectPath = `/${lang}/projects/${project.slug}/`;
+const alternatePath = `/${alternateLang}/projects/${project.slug}/`;
+---
+
+<Layout
+	title={project.name}
+	description={copy.shortDescription}
+	lang={lang}
+	canonicalPath={projectPath}
+	alternates={[
+		{ lang, href: projectPath },
+		{ lang: alternateLang, href: alternatePath },
+	]}
+>
+	<div class="site-shell">
+		<header class="site-header">
+			<a class="brand" href={languages[lang].homePath}>
+				<span aria-hidden="true" class="brand-square"></span>
+				torokoko
+			</a>
+			<LanguageNav lang={lang} currentPath={projectPath} alternatePath={alternatePath} />
+		</header>
+
+		<main id="content" class="single-column project-detail">
+			<RetroWindow title={`${project.slug}.exe`}>
+				<a class="text-link" href={languages[lang].homePath}>
+					{lang === "es" ? "volver al inicio" : "back home"}
+				</a>
+				<div class="project-detail-heading">
+					<div class="project-mark project-mark-large" aria-hidden="true">{project.mark}</div>
+					<div>
+						<p class="small-label">{copy.platform} / {copy.status}</p>
+						<h1>{project.name}</h1>
+					</div>
+				</div>
+				<ul class="tag-list" aria-label={`${project.name} technology tags`}>
+					{project.tags.map((tag) => <li>{tag}</li>)}
+				</ul>
+				<p class="project-overview">{copy.overview}</p>
+
+				<div class="project-detail-grid">
+					<div>
+						<h2>{copy.featuresTitle}</h2>
+						<ul class="feature-list">
+							{copy.features.map((feature) => <li>{feature}</li>)}
+						</ul>
+					</div>
+					<div>
+						<h2>{copy.architectureTitle}</h2>
+						<p>{copy.architecture}</p>
+					</div>
+				</div>
+
+				<div class="project-meta-box">
+					<strong>{lang === "es" ? "rol" : "role"}:</strong> {copy.role}
+				</div>
+				<h2>{copy.stackTitle}</h2>
+				<ul class="tag-list project-stack">
+					{copy.stack.map((technology) => <li>{technology}</li>)}
+				</ul>
+			</RetroWindow>
+		</main>
+	</div>
+</Layout>

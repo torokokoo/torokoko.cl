@@ -1,0 +1,35 @@
+---
+import { languages, type Lang } from "../data/site";
+import type { Project } from "../data/projects";
+
+interface Props {
+	projects: Project[];
+	lang: Lang;
+}
+
+const { projects, lang } = Astro.props;
+---
+
+<div class="project-list">
+	{projects.map((project) => {
+		const copy = project.copy[lang];
+		return (
+			<article class="project-card">
+				<div class="project-card-topline">
+					<div class="project-mark" aria-hidden="true">{project.mark}</div>
+					<div>
+						<p class="project-platform">{copy.platform}</p>
+						<h3>{project.name}</h3>
+					</div>
+				</div>
+				<ul class="tag-list" aria-label={`${project.name} technology tags`}>
+					{project.tags.map((tag) => <li>{tag}</li>)}
+				</ul>
+				<p>{copy.shortDescription}</p>
+				<a class="button-95 project-link" href={`${languages[lang].homePath}projects/${project.slug}/`}>
+					{lang === "es" ? "abrir proyecto" : "open project"} <span aria-hidden="true">-&gt;</span>
+				</a>
+			</article>
+		);
+	})}
+</div>
