@@ -63,10 +63,6 @@ const copy = homeCopy[lang];
 			</dl>
 		</RetroWindow>
 
-		<RetroWindow title={copy.projectsTitle} id="projects" class="projects-preview">
-			<ProjectList projects={projects} lang={lang} />
-		</RetroWindow>
-
 		<RetroWindow title={copy.connectTitle} id="contact">
 			<ul class="link-stack">
 				<li><a href={profile.social.linkedin}>LinkedIn</a></li>
@@ -74,6 +70,10 @@ const copy = homeCopy[lang];
 				<li><a href={`mailto:${profile.email}`}>{profile.email}</a></li>
 				<li><a href={profile.resumeEs}>{copy.resumeLabel}</a></li>
 			</ul>
+		</RetroWindow>
+
+		<RetroWindow title={copy.projectsTitle} id="projects" class="projects-preview">
+			<ProjectList projects={projects} lang={lang} />
 		</RetroWindow>
 	</main>
 
