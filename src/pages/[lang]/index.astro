@@ -1,7 +1,6 @@
 ---
 import HomeContent from "../../components/HomeContent.astro";
 import { homeCopy, isLang, languages, type Lang } from "../../data/site";
-import { getPosts } from "../../lib/posts";
 import Layout from "../../layouts/Layout.astro";
 
 export function getStaticPaths() {
@@ -15,7 +14,6 @@ if (!isLang(langParam)) {
 
 const lang: Lang = langParam;
 const copy = homeCopy[lang];
-const posts = await getPosts(lang, 3);
 ---
 
 <Layout
@@ -29,5 +27,5 @@ const posts = await getPosts(lang, 3);
 		{ lang: "en", href: languages.en.homePath },
 	]}
 >
-	<HomeContent lang={lang} posts={posts} />
+	<HomeContent lang={lang} />
 </Layout>

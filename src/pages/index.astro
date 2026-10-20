@@ -1,12 +1,10 @@
 ---
 import HomeContent from "../components/HomeContent.astro";
 import { homeCopy } from "../data/site";
-import { getPosts } from "../lib/posts";
 import Layout from "../layouts/Layout.astro";
 
 const lang = "en" as const;
 const copy = homeCopy[lang];
-const posts = await getPosts(lang, 3);
 ---
 
 <Layout
@@ -20,5 +18,5 @@ const posts = await getPosts(lang, 3);
 		{ lang: "en", href: "/" },
 	]}
 >
-	<HomeContent lang={lang} posts={posts} homePath="/" />
+	<HomeContent lang={lang} homePath="/" />
 </Layout>
