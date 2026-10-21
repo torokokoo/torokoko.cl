@@ -1,0 +1,31 @@
+---
+import HomeContent from "../../components/HomeContent.astro";
+import { homeCopy, isLang, languages, type Lang } from "../../data/site";
+import Layout from "../../layouts/Layout.astro";
+
+export function getStaticPaths() {
+	return [{ params: { lang: "es" } }];
+}
+
+const langParam = Astro.params.lang;
+if (!isLang(langParam)) {
+	return Astro.redirect("/");
+}
+
+const lang: Lang = langParam;
+const copy = homeCopy[lang];
+---
+
+<Layout
+	title={copy.metaTitle}
+	description={copy.metaDescription}
+	lang={lang}
+	canonicalPath={languages[lang].homePath}
+	alternates={[
+		{ lang: "x-default", href: "/" },
+		{ lang: "es", href: languages.es.homePath },
+		{ lang: "en", href: languages.en.homePath },
+	]}
+>
+	<HomeContent lang={lang} />
+</Layout>

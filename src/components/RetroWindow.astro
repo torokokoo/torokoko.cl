@@ -1,0 +1,21 @@
+---
+interface Props {
+	title: string;
+	id?: string;
+	class?: string;
+}
+
+const { title, id, class: className } = Astro.props;
+---
+
+<section id={id} class:list={["retro-window", className]}>
+	<header class="window-titlebar">
+		<span>{title}</span>
+		<span aria-hidden="true" class="window-controls">
+			<i></i><i></i><i></i>
+		</span>
+	</header>
+	<div class="window-body">
+		<slot />
+	</div>
+</section>

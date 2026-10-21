@@ -1,0 +1,85 @@
+---
+import { render } from "astro:content";
+
+import LanguageNav from "../../../components/LanguageNav.astro";
+import RetroWindow from "../../../components/RetroWindow.astro";
+import { blogCopy, isLang, languages, type Lang } from "../../../data/site";
+import { formatDate, getPosts, getTranslation, postUrl, type BlogPost } from "../../../lib/posts";
+import Layout from "../../../layouts/Layout.astro";
+
+export async function getStaticPaths() {
+	const posts = await getPosts();
+	return posts.map((post) => ({
+		params: {
+			lang: post.data.lang,
+			slug: post.data.slug,
+		},
+		props: { post },
+	}));
+}
+
+interface Props {
+	post: BlogPost;
+}
+
+const { post } = Astro.props;
+const langParam = Astro.params.lang;
+if (!isLang(langParam)) {
+	return Astro.redirect("/");
+}
+
+const lang: Lang = langParam;
+const copy = blogCopy[lang];
+const translatedPost = await getTranslation(post);
+const alternateLang = lang === "es" ? "en" : "es";
+const alternatePath = translatedPost ? postUrl(translatedPost) : languages[alternateLang].blogPath;
+const { Content } = await render(post);
+---
+
+<Layout
+	title={post.data.title}
+	description={post.data.description}
+	lang={lang}
+	canonicalPath={postUrl(post)}
+	alternates={[
+		{ lang: post.data.lang, href: postUrl(post) },
+		{ lang: alternateLang, href: alternatePath },
+	]}
+>
+	<div class="site-shell">
+		<header class="site-header">
+			<a class="brand" href={languages[lang].homePath}>
+				<img class="brand-icon" src="/favicon.ico" alt="" aria-hidden="true" />
+				torokoko
+			</a>
+			<LanguageNav lang={lang} currentPath={postUrl(post)} alternatePath={alternatePath} />
+		</header>
+
+		<main id="content" class="single-column">
+			<RetroWindow title={`${post.data.slug}.md`}>
+				<article class="blog-post">
+					<a class="text-link" href={languages[lang].blogPath}>{copy.backHome}</a>
+					<h1>{post.data.title}</h1>
+					<p class="lede">{post.data.description}</p>
+					<div class="post-meta">
+						<time datetime={post.data.publishDate.toISOString()}>
+							{formatDate(post.data.publishDate, lang)}
+						</time>
+						{post.data.updatedDate && (
+							<span>
+								{lang === "es" ? "actualizado " : "updated "}
+								{formatDate(post.data.updatedDate, lang)}
+							</span>
+						)}
+					</div>
+					{!translatedPost && (
+						<p class="notice">{copy.languageFallback}</p>
+					)}
+					<div class="markdown-body">
+						<Content />
+					</div>
+				</article>
+			</RetroWindow>
+		</main>
+	</div>
+</Layout>

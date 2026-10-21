@@ -1,0 +1,28 @@
+---
+import { languages, otherLang, type Lang } from "../data/site";
+
+interface Props {
+	lang: Lang;
+	currentPath?: string;
+	alternatePath?: string;
+	homePath?: string;
+}
+
+const {
+	lang,
+	currentPath = languages[lang].homePath,
+	alternatePath,
+	homePath = languages[lang].homePath,
+} = Astro.props;
+const nextLang = otherLang(lang);
+const nextPath = alternatePath ?? languages[nextLang].homePath;
+const contactPath = currentPath === homePath ? "#contact" : `${homePath}#contact`;
+---
+
+<nav class="site-nav" aria-label="Primary navigation">
+	<a href={homePath}>{lang === "es" ? "inicio" : "home"}</a>
+	<a href={languages[lang].blogPath}>blog</a>
+	<a href={contactPath}>{lang === "es" ? "contacto" : "contact"}</a>
+	<a aria-current="page" href={currentPath}>{languages[lang].shortLabel}</a>
+	<a href={nextPath}>{languages[nextLang].shortLabel}</a>
+</nav>

@@ -1,0 +1,37 @@
+---
+import { blogCopy, type Lang } from "../data/site";
+import { formatDate, postUrl, type BlogPost } from "../lib/posts";
+
+interface Props {
+	posts: BlogPost[];
+	lang: Lang;
+	emptyLabel?: string;
+}
+
+const { posts, lang, emptyLabel = blogCopy[lang].empty } = Astro.props;
+---
+
+{
+	posts.length > 0 ? (
+		<ol class="post-list">
+			{posts.map((post) => (
+				<li>
+					<a href={postUrl(post)}>{post.data.title}</a>
+					<time datetime={post.data.publishDate.toISOString()}>
+						{formatDate(post.data.publishDate, lang)}
+					</time>
+					<p>{post.data.description}</p>
+					{post.data.tags.length > 0 && (
+						<ul class="tag-list" aria-label={lang === "es" ? "Etiquetas" : "Tags"}>
+							{post.data.tags.map((tag) => (
+								<li>{tag}</li>
+							))}
+						</ul>
+					)}
+				</li>
+			))}
+		</ol>
+	) : (
+		<p class="empty-state">{emptyLabel}</p>
+	)
+}

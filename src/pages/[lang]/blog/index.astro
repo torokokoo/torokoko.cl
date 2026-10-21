@@ -1,0 +1,53 @@
+---
+import LanguageNav from "../../../components/LanguageNav.astro";
+import PostList from "../../../components/PostList.astro";
+import RetroWindow from "../../../components/RetroWindow.astro";
+import { blogCopy, isLang, languages, type Lang } from "../../../data/site";
+import { getPosts } from "../../../lib/posts";
+import Layout from "../../../layouts/Layout.astro";
+
+export function getStaticPaths() {
+	return Object.keys(languages).map((lang) => ({ params: { lang } }));
+}
+
+const langParam = Astro.params.lang;
+if (!isLang(langParam)) {
+	return Astro.redirect("/");
+}
+
+const lang: Lang = langParam;
+const copy = blogCopy[lang];
+const posts = await getPosts(lang);
+const alternateLang = lang === "es" ? "en" : "es";
+---
+
+<Layout
+	title={copy.metaTitle}
+	description={copy.metaDescription}
+	lang={lang}
+	canonicalPath={languages[lang].blogPath}
+	alternates={[
+		{ lang: "es", href: languages.es.blogPath },
+		{ lang: "en", href: languages.en.blogPath },
+	]}
+>
+	<div class="site-shell">
+		<header class="site-header">
+			<a class="brand" href={languages[lang].homePath}>
+				<img class="brand-icon" src="/favicon.ico" alt="" aria-hidden="true" />
+				torokoko
+			</a>
+			<LanguageNav lang={lang} currentPath={languages[lang].blogPath} alternatePath={languages[alternateLang].blogPath} />
+		</header>
+
+		<main id="content" class="single-column">
+			<RetroWindow title={copy.windowTitle}>
+				<p class="small-label">{copy.allPosts}</p>
+				<h1>{copy.heading}</h1>
+				<p class="lede">{copy.intro}</p>
+				<PostList posts={posts} lang={lang} />
+				<a class="button-95" href={languages[lang].homePath}>{copy.backHome}</a>
+			</RetroWindow>
+		</main>
+	</div>
+</Layout>
